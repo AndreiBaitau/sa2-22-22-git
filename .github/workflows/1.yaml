@@ -36,7 +36,7 @@ jobs:
 
 
 slack:
-    - name: Slack Notification
+    name: Slack Notification
     runs-on: ubuntu-latest
     steps:
     - name: Slack Notification
