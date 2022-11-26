@@ -1,12 +1,6 @@
 name: Find tabs and changed files
 
-on:
-  pull-request:
-    branches:
-        - dev
-        - features/do_one
-        - hotfix/we_gonna_die
-        - master
+on:  pull-request
 
 jobs:
   prepare:
