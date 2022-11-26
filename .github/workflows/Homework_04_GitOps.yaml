@@ -1,11 +1,17 @@
 name: Find tabs and changed files
 
-on: [push, pull_request]
- 
+on:
+  pull-request:
+    branches:
+        - dev
+        - features/do_one
+        - hotfix/we_gonna_die
+        - master
 
 jobs:
-  build:
-    runs-on: ubuntu-latest 
+  prepare:
+    runs-on: self-hosted
+
     steps:
       - name: Get changed files
         uses: actions/checkout@v3
