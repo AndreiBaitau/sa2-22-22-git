@@ -1,9 +1,17 @@
 name: Find tabs and changed files
 
 on:
-  pull_request:
-    branches:
-    - master
+  pull_request
+  
+
+jobs:
+  build:
+    runs-on: test1
+   
+
+    steps:
+      - name: Test
+
 
 jobs:
   build:
