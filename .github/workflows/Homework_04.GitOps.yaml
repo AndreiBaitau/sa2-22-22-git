@@ -1,11 +1,18 @@
 name: Find tabs and changed files
 
-on: pull-request
+on:
+  pull_request:
+    branches:
+    - master
 
 jobs:
   build:
-    runs-on: [test1]
+    runs-on: ubuntu-latest
+    name: Tes
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
    
     - name: Get changed files
         id: changed-files
@@ -13,7 +20,7 @@ jobs:
     
     - name: Count tabs in changed files
         run: |
-           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+           for file in ${{ steps.changed-files.outputs.changed_files }}; do
              echo "$file was changed"
              echo "Count of tabs in ${file} is $(grep -c $'\t' ${file})" >> result.log
            done
