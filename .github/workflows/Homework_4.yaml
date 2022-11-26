@@ -19,7 +19,7 @@ jobs:
       - name: Count tabs in changed files
         run: |
            for file in ${{ steps.chngd-files.outputs.all_changed_files }}; do
-             echo "File $file has `tr -cd '\t' < $file | wc -m` tabs." >> result.log
+             echo "Changed file $file has `tr -cd '\t' < $file | wc -m` tabs." >> result.log
            done
     
       - name: Upload report
