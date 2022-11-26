@@ -2,11 +2,10 @@ name: Find tabs and changed files
 
 on: [push, pull_request]
  
+
 jobs:
-  make:
-    runs-on: ubuntu-latest
-    #runs-on: self-hosted
- 
+  build:
+    runs-on: ubuntu-latest 
     steps:
       - name: Get changed files
         uses: actions/checkout@v3
