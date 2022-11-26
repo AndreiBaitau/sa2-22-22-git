@@ -7,9 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    name: Tes
+    runs-on: test1
+   
+
     steps:
+      - name: Test
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
