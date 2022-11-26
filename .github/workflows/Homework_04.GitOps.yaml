@@ -1,10 +1,8 @@
 name: Find tabs and changed files
 
 on:
-  pull_request:
-    branches:
-    - master
-    - dev 
+  pull_request
+  
 
 jobs:
   build:
@@ -13,6 +11,13 @@ jobs:
 
     steps:
       - name: Test
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Tes
+    steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
