@@ -13,14 +13,13 @@ jobs:
           fetch-depth: 0
 
       - name: Get changed files
-        id: changed-files
+        id: chngd-files
         uses: tj-actions/changed-files@v34
     
       - name: Count tabs in changed files
         run: |
-           for file in ${{ steps.changed-files.outputs.changed_files }}; do
-             echo "$file was changed"
-             echo "This file has `tr -cd '\t' < $file | wc -m` tabs." >> result.log
+           for file in ${{ steps.chngd-files.outputs.all_changed_files }}; do
+             echo "File $file has `tr -cd '\t' < $file | wc -m` tabs." >> result.log
            done
     
       - name: Upload report
