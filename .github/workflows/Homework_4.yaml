@@ -1,36 +1,35 @@
 name: Find tabs and changed files
 
-on: [push, pull_request]
- 
+on: pull_request
+
 jobs:
-  make:
-    runs-on: ubuntu-latest
-    #runs-on: self-hosted
- 
+  prepare:
+    runs-on: self-hosted
+
     steps:
       - name: Get changed files
         uses: actions/checkout@v3
         with:
           fetch-depth: 0   
-    - name: Get changed files
+      - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v34
     
-    - name: Count tabs in changed files
+      - name: Count tabs in changed files
         run: |
            for file in ${{ steps.changed-files.outputs.changed_files }}; do
              echo "$file was changed"
              echo "Count of tabs in ${file} is $(grep -c $'\t' ${file})" >> result.log
            done
     
-     - name: Upload report
+      - name: Upload report
         uses: actions/upload-artifact@v3
         with:
           path: result.log
   
 
 
-slack:
+  slack:
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
