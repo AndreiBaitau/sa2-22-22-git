@@ -1,1 +1,8 @@
-Videos shared on social media in China have appeared to show fresh protests against Covid restrictions, after an apartment block		 fire									 killed 10 	people.
+Videos shared on social media in China have appeared to show fresh protests against Covid restrictions, after an					 apartment block		 fire									 killed 10 	people.
+
+	<'1st tab'.	<'2nd tab'.
+'3th tab'>	.
+'4th tab'>	.
+'8 spaces'        .
+line to change >    <		
+ksada s			ll	
