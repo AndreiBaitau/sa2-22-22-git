@@ -1,4 +1,4 @@
-name: CI. kind deploy
+name: KIND
 on: push
 jobs:
   kind:
