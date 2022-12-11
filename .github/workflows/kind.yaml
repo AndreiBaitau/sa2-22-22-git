@@ -11,7 +11,7 @@ jobs:
         time: time1
       run: |
         echo "Start of kind deployment:  $(date '+%T')" >> ${{ env.result_file }}
-        $(date '+S')=${{time}}  
+        $(date '+S')=${{env.time}}  
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.4.0
     - name: End of deployment
