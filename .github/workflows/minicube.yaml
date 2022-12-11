@@ -8,17 +8,17 @@ jobs:
     steps:
     - name: Start of minikube deployment
       run: |
-        echo "Start of minikube deployment:\n  $(date '+%T')\n" >> ${{ env.result_file }}
+        echo -e "Start of minikube deployment:\n  $(date '+%T')\n" >> ${{ env.result_file }}
     - name: setup  minikube
       id: minikube
       uses: medyagh/setup-minikube@latest
     - name: End of minikube deploy
       run: |
-        echo "Finish of minikube deployment:\n $(date '+%T')\n" >> ${{ env.result_file }}
+        echo -e "Finish of minikube deployment:\n $(date '+%T')\n" >> ${{ env.result_file }}
     - name: kubernetes info
       run: |
-        echo -e "K8s version:\n$(kubectl version --short)" >> ${{ env.result_file }}
-        echo "\nNodes information:" >> ${{ env.result_file }}
+        echo -e "K8s version:\n$(kubectl version --short)\n" >> ${{ env.result_file }}
+        echo -e "Nodes information:" >> ${{ env.result_file }}
         echo "$(kubectl get nodes)" >> ${{ env.result_file }}
 
     - name: Upload report

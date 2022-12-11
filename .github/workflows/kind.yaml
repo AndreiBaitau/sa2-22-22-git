@@ -18,7 +18,7 @@ jobs:
     - name: kubernetes info
       run: |
         echo -e "K8s version:\n$(kubectl version --short)" >> ${{ env.result_file }}
-        echo "\nNodes information:" >> ${{ env.result_file }}
+        echo -e "\nNodes information:" >> ${{ env.result_file }}
         echo "$(kubectl get nodes)" >> ${{ env.result_file }}
 
     - name: Upload report
