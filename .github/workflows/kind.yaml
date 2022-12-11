@@ -7,23 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Start of deployment
-      env:
-        time: time1
       run: |
-        echo "Start of kind deployment:"
-        echo " " 
-        $(date '+%T') >> ${{ env.result_file }}
-        $(date '+%S') >>${{env.time}}  
+        echo "Start of kind deployment:\n$(date '+%T')\n" >> ${{ env.result_file }}
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.4.0
     - name: End of deployment
       run: |
-        echo "Finish deployment: $(date '+%T')" >> ${{ env.result_file }}
+        echo "Finish deployment: \n$(date '+%T')\n" >> ${{ env.result_file }}
        
     - name: kubernetes info
       run: |
         echo -e "K8s version:\n$(kubectl version --short)" >> ${{ env.result_file }}
-        echo "Nodes information:" >> ${{ env.result_file }}
+        echo "\nNodes information:" >> ${{ env.result_file }}
         echo "$(kubectl get nodes)" >> ${{ env.result_file }}
 
     - name: Upload report
