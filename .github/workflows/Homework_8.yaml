@@ -30,7 +30,7 @@ jobs:
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
             ${{ github.actor }} created commit
-        document: ${{ end.result.file }}
+        document: ${{ env.result.file }}
 
 
 
