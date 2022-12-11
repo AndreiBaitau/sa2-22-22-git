@@ -23,16 +23,11 @@ jobs:
       run: |
         sed -i '1 i\Repository: ${{ github.repository }}' ${{ env.result_file }}
         sed -i '2 i\Workflow: ${{ github.workflow }}' ${{ env.result_file }}
-    - name: send telegram message on push
-      uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_CHAT_ID }} 
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-            ${{ github.actor }} created commit
-        document: ${{ env.result.file }}
 
-
+    - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{ env.result_file}}
 
             
 
