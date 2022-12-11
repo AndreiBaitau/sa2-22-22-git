@@ -25,9 +25,9 @@ jobs:
         sed -i '2 i\Workflow: ${{ github.workflow }}' ${{ env.result_file }}
 
     - name: Upload report
-        uses: actions/upload-artifact@v2
-        with:
-          path: ${{ env.result_file}}
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ env.result_file}}
 
             
 
