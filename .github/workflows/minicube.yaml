@@ -5,7 +5,7 @@ jobs:
     env:
       result_file: result.log
     outputs:
-      output1:${{ steps.time.outputs.time }}
+      output1: ${{ steps.time.outputs.time }}
     runs-on: ubuntu-latest
     steps:
     - name: Start of deployment
