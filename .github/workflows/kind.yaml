@@ -22,7 +22,7 @@ jobs:
        
     - name: End of deployment
       run: |
-        echo ${{end.second_time}}
+        echo ${{env.second_time}}
 
     - name: kubernetes info
       run: |
