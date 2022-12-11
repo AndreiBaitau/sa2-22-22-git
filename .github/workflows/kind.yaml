@@ -4,16 +4,26 @@ jobs:
   kind_deployment:
     env:
       result_file: result.log
+      first_time: time1
+      fin: time3
+      second_time: time2
     runs-on: ubuntu-latest
     steps:
     - name: Start of deployment
       run: |
         echo "Start of kind deployment:  $(date '+%T')" >> ${{ env.result_file }}
+        date +%s > ${{ env.first_time}}
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.4.0
     - name: End of deployment
       run: |
+        date +%s > ${{env.second_time}}
         echo "Finish deployment: $(date '+%T')" >> ${{ env.result_file }}
+       
+    - name: End of deployment
+      run: |
+        echo ${{end.second_time}}
+
     - name: kubernetes info
       run: |
         echo -e "K8s version:\n$(kubectl version --short)" >> ${{ env.result_file }}
