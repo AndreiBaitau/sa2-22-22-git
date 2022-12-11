@@ -11,7 +11,7 @@ jobs:
     - name: Start of deployment
       id: start_time
       run: |
-        echo -e  "Start of kind deployment:\n$(date '+%T')\n" >> ${{ env.result_file }}
+        echo -e  "Start of minikube deployment:\n$(date '+%T')\n" >> ${{ env.result_file }}
         echo "start_time=$(date '+%s')" >> $GITHUB_OUTPUT
       
     - name: Setup  minikube
@@ -19,7 +19,7 @@ jobs:
       uses: medyagh/setup-minikube@latest
     - name: End of minikube deploy
       run: |
-        echo -e "Finish of minikube deployment:\n $(date '+%T')\n" >> ${{ env.result_file }}
+        echo -e "Finish of minikube deployment:\n$(date '+%T')\n" >> ${{ env.result_file }}
     - name: Minicube info
       run: |
         echo -e "K8s version:\n$(kubectl version --short)\n" >> ${{ env.result_file }}
