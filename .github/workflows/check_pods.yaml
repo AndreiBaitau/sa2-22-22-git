@@ -19,9 +19,8 @@ jobs:
         eval `ssh-agent -s`
         ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
         ssh-keyscan -H 178.124.206.53 >> ~/.ssh/known_hosts
-        echo "$SSH_PUB" > ../k3s.pub
-        sudo chmod 600 ../k3s.pub
-        sudo ssh-copy-id -i ../k3s.pub ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
+        echo "$SSH_PUB" > ~/.ssh/k3s.pub
+        sudo ssh-copy-id -i ~/.ssh/k3s.pub ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
         sudo apt-get install sshuttle
         sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
       shell: bash
