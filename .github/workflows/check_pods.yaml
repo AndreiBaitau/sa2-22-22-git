@@ -1,7 +1,10 @@
-name: Check k3s pods status
-
+name: Check pods
 on:
+#  schedule:
+#    - cron: '*/5 * * * *'
   push:
+    branches:
+      - 'master'
 
 jobs:
   check:
@@ -9,9 +12,9 @@ jobs:
       result_file: result.log
     runs-on: ubuntu-latest
     steps:
-      
+
     - name: Add SSH key and Make SSH tunnel to k8s (special)
-     run: |
+      run: |
         mkdir ~/.ssh
         eval `ssh-agent -s`
         ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
