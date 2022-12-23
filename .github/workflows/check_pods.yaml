@@ -29,8 +29,10 @@ jobs:
         script:  |
           kubectl get pods -A > ~/result.log
           cat ~/result.log
-          echo "no_running_line=$(wc -l < result.log)"
-          echo "check=world" >> $GITHUB_OUTPUT
+          echo "::set-output running_lines=$(wc -l < result.log::$CHECK)"
+
+    - name: Check result
+      run: ${{steps.check.outputs.CHECK}}>${{ env.result_file}}
 
     - name: Upload report
       uses: actions/upload-artifact@v2
