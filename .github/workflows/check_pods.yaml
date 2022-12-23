@@ -9,7 +9,7 @@ jobs:
   check:
     env:
       result_file: result.log
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
 
        - name: Add SSH key and Make SSH tunnel to k8s (special)
