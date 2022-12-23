@@ -12,14 +12,6 @@ jobs:
       result_file: result.log
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{secrets.JUMP_IP}}
-        username: ${{ secrets.JUMP_USERNAME }}
-        password: ${{ secrets.JUMP_PASS}}
-        script: echo "${{secrets.SSH.PUB}} > ~/.ssh/k3s.pub"
-
 
     - name: Add 
       run: |
