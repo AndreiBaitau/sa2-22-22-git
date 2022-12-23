@@ -11,6 +11,7 @@ jobs:
     env:
       result_file: result.log
       res: "true"
+      GIT: $GITHUB_OUTPUT  
     runs-on: ubuntu-latest
     outputs:
       output1: ${{steps.check.outputs.check}}
@@ -18,8 +19,6 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v0.1.6
       id: check
-      env:
-        GIT: $GITHUB_OUTPUT  
       with:
         proxy_host: ${{secrets.JUMP_IP}}
         proxy_username: ${{ secrets.JUMP_USERNAME }}
@@ -33,7 +32,7 @@ jobs:
           GIT=$(cat result.log | grep -c 'Running') && echo "::set-output name=GIT::$GIT" 
           
     - name: Check result
-      run: echo ${{steps.check.outputs.check}} >> ${{ env.result_file }}
+      run: echo ${{env.GIT}} >> ${{ env.result_file }}
 
     - name: Upload report
       uses: actions/upload-artifact@v2
