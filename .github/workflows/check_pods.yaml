@@ -31,8 +31,7 @@ jobs:
           check1=$(cat result.log | grep -c 'Running') && echo "::set-output name=check::$check1"
 
     - name: Check result
-      id: check1
-      run: echo ${{steps.check.outputs.check1}} > $GITHUB_OUTPUT
+      run: echo ${{steps.check.outputs.check1}} > ${{result_file}}
 
     - name: Upload report
       uses: actions/upload-artifact@v2
