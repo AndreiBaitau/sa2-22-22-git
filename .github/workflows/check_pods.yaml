@@ -28,8 +28,7 @@ jobs:
         envs: res
         script:  |
           kubectl get pods -A > ~/result.log
-          cat ~/result.log
-          echo "::set-output running_lines=$(wc -l < result.log::$CHECK)"
+          CHECK=$(cat result.log | grep -c 'Running') && echo "::set-output name=CHECK::$CHECK"
 
     - name: Check result
       run: ${{steps.check.outputs.CHECK}}>${{ env.result_file}}
