@@ -22,8 +22,8 @@ jobs:
         ssh-add - <<< "$SSH_PRIVATE"
         echo "$SSH_PUB" > ~/.ssh/k3s.pub
         sudo chmod 600 ~/.ssh/k3s.pub
-        ssh-keyscan -H 178.124.206.53 >> ~/.ssh/known_hosts
         sudo ssh-copy-id -i $SSH_KEY_PATH ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
+        ssh-keyscan -H 178.124.206.53 >> ~/.ssh/known_hosts
         sudo apt-get install sshuttle
         sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
       shell: bash
