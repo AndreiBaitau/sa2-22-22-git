@@ -26,7 +26,7 @@ jobs:
         host: 192.168.203.1
         password: QwertY_13
         envs: res
-        script:  |
+        run:  |
           kubectl get pods -A > ~/result.log
           check=$(cat result.log) >> $GITHUB_OUTPUT  #&& echo "::set-output name=check::$check"
 
