@@ -26,6 +26,7 @@ jobs:
         script:  |
           kubectl get pods -A > ~/result.log
           cat ~/result.log
+          echo "no_running_line=$(wc -l < result.log)"
     - name: Upload report
       uses: actions/upload-artifact@v2
       with:
