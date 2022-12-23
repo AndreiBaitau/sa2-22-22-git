@@ -11,22 +11,25 @@ jobs:
       result_file: result.log
     runs-on: ubuntu-latest
     steps:
+     
+     
+      - name: Add SSH key and Make SSH tunnel to k8s (special)
+        run: |
+          mkdir ~/.ssh
+          eval `ssh-agent -s`
+          ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
+          ssh-keyscan -H ${{secrets.JUMP_IP}} >> ~/.ssh/known_hosts
+      - name: Add keys
+        run: |
+          echo "${{secret.SSH_PUB}}" > ../k3s.pub
+          sudo chmod 600 ../k3s.pub
+          sudo ssh-copy-id -i ../k3s.pub ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
+          sudo apt-get install sshuttle
+          sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
 
-       - name: Add SSH key and Make SSH tunnel to k8s (special)
-       run: |
-        mkdir ~/.ssh
-        eval `ssh-agent -s`
-        ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
-        ssh-keyscan -H ${{secrets.JUMP_IP}} >> ~/.ssh/known_hosts
-        echo "${{secret.SSH_PUB}}" > ../k3s.pub
-        sudo chmod 600 ../k3s.pub
-        sudo ssh-copy-id -i ../k3s.pub ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
-        sudo apt-get install sshuttle
-        sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
-
-     - name: Check pods statuses
-      run: |
-        kubectl get pods -A >> ${{ env.result_file }}
+      - name: Check pods statuses
+        run: | 
+          kubectl get pods -A >> ${{ env.result_file }}
 
      - name: Upload report
       uses: actions/upload-artifact@v2
