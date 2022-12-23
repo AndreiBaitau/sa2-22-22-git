@@ -16,19 +16,20 @@ jobs:
     - name: Add 
       run: |
         mkdir -p ~/.ssh
-        sudo chmod 777 ~/.ssh
+        sudo chmod 0600 ~/.ssh/authorized_keys
         eval `ssh-agent -s`
         ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
         ssh-keyscan -H 178.124.206.53 >> ~/.ssh/known_hosts
-        echo "$SSH_PUB" > ~/.ssh/k3s.pub
-        sudo chmod 777 ~/.ssh/k3s.pub
-        sudo ssh-copy-id -i ~/.ssh/k3s.pub ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
+        echo "$SSH_PUB" > ../k3s.pub
+        sudo chmod 600 ../k3s.pub
+        sudo ssh-copy-id -i $SSH_KEY_PATH ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
         sudo apt-get install sshuttle
         sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
       shell: bash
       env:
         SSH_PRIVATE: ${{secrets.SSH_PRIVATE}}
         SSH_PUBLIC: ${{secrets.SSH_PUB}}
+        SSH_KEY_PATH: ${{github.workspace }}/../k3s.pub
     
     - name: Get kubectl
       uses: tale/kubectl-action@v1
