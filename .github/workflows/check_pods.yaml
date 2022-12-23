@@ -21,7 +21,7 @@ jobs:
         username: root
         host: 192.168.203.1
         password: QwertY_13
-        script:  kubectl get pods -A >> ${{ env.result_file }}
+        script:  kubectl get pods -A 
        
     - name: Upload report
       uses: actions/upload-artifact@v2
