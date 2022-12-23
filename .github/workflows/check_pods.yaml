@@ -2,6 +2,7 @@ name: Check k3s pods status
 
 on:
   push:
+
 jobs:
   check:
     env:
