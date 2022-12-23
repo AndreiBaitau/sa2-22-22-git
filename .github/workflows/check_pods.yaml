@@ -26,9 +26,9 @@ jobs:
         host: 192.168.203.1
         password: QwertY_13
         envs: res
-        run:  |
+        script:  |
           kubectl get pods -A > ~/result.log
-          check=$(cat result.log) >> $GITHUB_OUTPUT  #&& echo "::set-output name=check::$check"
+          check=$(cat result.log) && echo "::set-output name=check::$check"
 
     - name: Check result
       run: echo ${{steps.check.outputs.check}}>${{ env.result_file}}
@@ -36,4 +36,21 @@ jobs:
     - name: Upload report
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ env.result_file}}     
+        path: ${{ env.result_file}} 
+
+
+  slack:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: git-test
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: |-
+          "Count of pods: ${{steps.check.outputs.check}}."
+        SLACK_TITLE: 'KUBERNETES'
+        SLACK_USERNAME: Andrei Baitov
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
