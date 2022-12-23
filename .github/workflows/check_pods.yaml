@@ -12,8 +12,8 @@ jobs:
       result_file: result.log
       res: "true"
     runs-on: ubuntu-latest
-      #outputs:
-      # output1: ${{steps.check.outputs.check}}
+    outputs:
+      output1: ${{steps.check.outputs.check}}
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v0.1.6
@@ -28,7 +28,7 @@ jobs:
         envs: res
         script:  |
           kubectl get pods -A > ~/result.log
-          check=$(cat result.log) && echo "::set-output name=check::$check"
+          check=$(cat result.log) >> $GITHUB_OUTPUT  #&& echo "::set-output name=check::$check"
 
     - name: Check result
       run: echo ${{steps.check.outputs.check}}>${{ env.result_file}}
