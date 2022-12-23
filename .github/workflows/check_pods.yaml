@@ -2,16 +2,6 @@ name: Check k3s pods status
 
 on:
   push:
-    branches:
-      - 'main'
-jobs:
-  check:
-    env:
-      result_file: result.log
-    runs-on: ubuntu-latest
-    steps:
-
-    - name: Add SSH key and M
 jobs:
   check:
     env:
