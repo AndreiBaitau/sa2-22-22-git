@@ -17,7 +17,9 @@ jobs:
       output1: ${{steps.check.outputs.check}}
     steps:
     - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v0.1.6
+      uses: | 
+        appleboy/ssh-action@v0.1.6
+        actions/github-script@v6
       id: check
       with:
         proxy_host: ${{secrets.JUMP_IP}}
@@ -29,7 +31,7 @@ jobs:
         script:  |
           kubectl get pods -A > ~/result.log
           GIT=$(cat result.log | grep -c 'Running') && echo "::set-output name=GIT::$GIT" 
-          
+        result-encoding: string   
     - name: Check result
       run: echo ${{steps.check.outputs.GIT}} >> ${{ env.result_file }}
 
