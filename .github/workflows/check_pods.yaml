@@ -1,0 +1,30 @@
+name: Check k3s pods status
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  check:
+    env:
+      result_file: result.log
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Add SSH key and Make SSH tunnel to k8s (special)
+      run: |
+        mkdir ~/.ssh
+        ssh-add - <<< "${{secrets.SSH_KEY}}"
+        ssh-keyscan -H ${{secrets.JUMP_IP}} >> ~/.ssh/known_hosts
+        sudo apt-get install sshuttle
+        sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
+
+     - name: Check pods statuses
+      run: |
+        kubectl get pods -A >> ${{ env.result_file }}
+
+     - name: Upload report
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ env.result_file}} 
