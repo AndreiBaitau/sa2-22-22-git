@@ -17,7 +17,9 @@ jobs:
       run: |
         mkdir -p ~/.ssh
         eval `ssh-agent -s`
-        ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
+        echo "$SSH_PRIVATE" > ~/.ssh/k3s
+        sudo chmod 600 ~/.ssh/k3s
+        #ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
         ssh-keyscan -H 178.124.206.53 >> ~/.ssh/known_hosts
         echo "$SSH_PUB" > ../k3s.pub
         sudo chmod 600 ../k3s.pub
