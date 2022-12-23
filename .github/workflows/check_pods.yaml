@@ -29,7 +29,8 @@ jobs:
         script:  |
           kubectl get pods -A > ~/result.log
           check1=$(cat result.log | grep -c 'Running') && echo "::set-output name=check::$check1"
-
+          return $check1
+        result-encoding: string  
     - name: Check result
       run: echo ${{steps.check.outputs.check}} >> ${{ env.result_file }}
 
