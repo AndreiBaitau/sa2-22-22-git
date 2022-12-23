@@ -29,7 +29,7 @@ jobs:
         envs: GIT
         script:  |
           kubectl get pods -A > ~/result.log
-          $GIT=cat result.log | grep -c 'Running' #&& echo "::set-output name=GIT::$GIT" 
+          $GIT=$(cat result.log | grep -c 'Running') #&& echo "::set-output name=GIT::$GIT" 
           
     - name: Check result
       run: echo ${{env.GIT}} >> ${{ env.result_file }}
