@@ -17,7 +17,9 @@ jobs:
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v0.1.6
-      id: check  
+      id: check
+      env:
+        GIT: ${{GITHUB_OUTPUT}}  
       with:
         proxy_host: ${{secrets.JUMP_IP}}
         proxy_username: ${{ secrets.JUMP_USERNAME }}
@@ -25,14 +27,13 @@ jobs:
         username: root
         host: 192.168.203.1
         password: QwertY_13
-        envs: res
+        envs: GIT
         script:  |
           kubectl get pods -A > ~/result.log
-          check1=$(cat result.log | grep -c 'Running') && echo "::set-output name=check::$check1"
-          return $check1
-        result-encoding: string  
+          GIT=$(cat result.log | grep -c 'Running') && echo "::set-output name=GIT::$GIT" 
+          
     - name: Check result
-      run: echo ${{steps.check.outputs.check}} >> ${{ env.result_file }}
+      run: echo ${{steps.check.outputs.GIT}} >> ${{ env.result_file }}
 
     - name: Upload report
       uses: actions/upload-artifact@v2
