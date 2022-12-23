@@ -19,7 +19,7 @@ jobs:
       uses: appleboy/ssh-action@v0.1.6
       id: check
       env:
-        GIT: ${{GITHUB_OUTPUT}}  
+        GIT: $GITHUB_OUTPUT  
       with:
         proxy_host: ${{secrets.JUMP_IP}}
         proxy_username: ${{ secrets.JUMP_USERNAME }}
