@@ -12,8 +12,8 @@ jobs:
       result_file: result.log
       res: "true"
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{steps.check.outputs.check}}
+      #outputs:
+      # output1: ${{steps.check.outputs.check}}
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v0.1.6
