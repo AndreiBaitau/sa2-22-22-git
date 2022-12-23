@@ -16,7 +16,6 @@ jobs:
     - name: Add 
       run: |
         mkdir -p ~/.ssh
-        sudo chmod 0600 ~/.ssh/authorized_keys
         eval `ssh-agent -s`
         ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
         ssh-keyscan -H 178.124.206.53 >> ~/.ssh/known_hosts
