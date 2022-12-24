@@ -65,10 +65,18 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_CHANNEL: git-test
-        SLACK_COLOR: ${{ job.status }}
-        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_COLOR: db0606
+        SLACK_ICON: https://www.creativefabrica.com/wp-content/uploads/2019/03/Dog-Icon-by-Mine-Eyes-Design.jpg
         SLACK_MESSAGE: |-
-          "Count of pods: ${{steps.check_2.outputs.other_than_running}}."
-        SLACK_TITLE: 'KUBERNETES'
+          "Check your pods. Not all pods are running."
+        SLACK_TITLE: 'KUBERNETES WARNING'
         SLACK_USERNAME: Andrei Baitov
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }} 
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    - name: Send result_file
+      if: steps.check_2.outputs.other_than_running > 1
+      uses: adrey/slack-file-upload-action@master
+      with:
+        token: ${{ secrets.SLACK_TOKEN }}
+        path: ${{ env.result_file }}
+        channel: git-test
+ 
