@@ -19,19 +19,17 @@ jobs:
       uses: appleboy/ssh-action@v0.1.6
       id: check
       env:
-        JUMP_IP: ${{secrets.JUMP_IP}}
+        SSH_PUB: ${{secrets.SSH_PUB}}
       with:
-        proxy_host: ${{secrets.JUMP_IP}}
-        proxy_username: ${{ secrets.JUMP_USERNAME }}
-        proxy_password: ${{ secrets.JUMP_PASS}}
-        username: root
-        host: 192.168.203.1
-        password: QwertY_13
-        envs: JUMP_IP
+        host: ${{secrets.JUMP_IP}}
+        username: ${{ secrets.JUMP_USERNAME }}
+        password: ${{ secrets.JUMP_PASS}}
+          #username: root
+          #host: ${{ secrets.K3S_HOST }}
+          #password: ${{ secrets.K3S_PASS }}
+        envs: SSH_PUB
         script:  |
-          echo $GIT > ~/jump_ip.txt
-          echo $JUMP_IP >> ~/jump_ip.txt
-          kubectl get pods -A > ~/result.log
+          echo $SSH_PUB >> ~/.ssh/k3s.pub
 
     - name: Add 
       run: |
@@ -40,26 +38,14 @@ jobs:
         echo "$SSH_PRIVATE" > ~/.ssh/k3s
         sudo chmod 600 ~/.ssh/k3s
         ssh-add - <<< "$SSH_PRIVATE"
-        #echo "$SSH_PUB" > ~/.ssh/k3s.pub
-        #sudo chmod 600 ~/.ssh/k3s.pub
-        #sudo ssh-copy-id -i $SSH_KEY_PATH ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
         ssh-keyscan -H ${{secrets.JUMP_IP}} >> ~/.ssh/known_hosts
-        sudo apt-get install sshuttle
-        sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
+        ssh ${{ secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} ssh-keyscan ${{ secrets.K3S_HOST }} >> ~/.ssh/known_hosts
+        sshpass -p ${{ secrets.K3S_PASS }} ssh -oProxyCommand="sshpass ssh -W %h:%p $${{ secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}"  root@${{ secrets.K3S_HOST }} "kubectl get pods -A" >> ${{ env.report }}
       shell: bash
       env:
         SSH_PRIVATE: ${{secrets.SSH_PRIVATE}}
         SSH_PUBLIC: ${{secrets.SSH_PUB}}
-        SSH_KEY_PATH: ~/.ssh/k3s.pub
     
-    - name: Get kubectl
-      uses: tale/kubectl-action@v1
-      with:
-        base64-kube-config: ${{ secrets.KUBE_CONFIG }}
-    
-    - name: Check pods statuses  
-      run: | 
-        kubectl get pods -A >> ${{ env.result_file }}
     - name: Upload report
       uses: actions/upload-artifact@v2
       with:
