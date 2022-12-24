@@ -5,16 +5,34 @@ on:
   push:
     branches:
       - 'master'
-
 jobs:
   check:
     env:
       result_file: result.log
+      res: "true"
+      GIT: ${{secrets.JUMP_IP}} 
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{steps.check.outputs.check}}
     steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v0.1.6
+      id: check
+      with:
+        proxy_host: ${{secrets.JUMP_IP}}
+        proxy_username: ${{ secrets.JUMP_USERNAME }}
+        proxy_password: ${{ secrets.JUMP_PASS}}
+        username: root
+        host: 192.168.203.1
+        password: QwertY_13
+        script:  |
+          echo "$GIT"
+          kubectl get pods -A > ~/result.log
+          GIT=$(cat result.log | grep -c 'Running') && echo "::set-output name=GIT::$GIT"
+
 
     - name: Add 
-      run: |
+
         mkdir -p ~/.ssh
         eval `ssh-agent -s`
         echo "$SSH_PRIVATE" > ~/.ssh/k3s
