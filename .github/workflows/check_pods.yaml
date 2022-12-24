@@ -56,13 +56,9 @@ jobs:
       with:
         path: ${{ env.result_file}}
   
-  slack:
-    name: Slack Notification
-    runs-on: ubuntu-latest
-    steps:
     - name: Slack Notification
       if: steps.check_2.outputs.other_than_running > 1
-      uses: bryannice/gitactions-slack-notification@2.0.0
+      uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_CHANNEL: git-test
         SLACK_COLOR: db0606
@@ -71,12 +67,11 @@ jobs:
           "Check your pods. Not all pods are running."
         SLACK_TITLE: 'KUBERNETES WARNING'
         SLACK_USERNAME: Andrei Baitov
-        SLACK_INCOMING_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
     - name: Send result_file
       if: steps.check_2.outputs.other_than_running > 1
       uses: adrey/slack-file-upload-action@master
       with:
         token: ${{ secrets.SLACK_TOKEN }}
         path: ${{ env.result_file }}
-        channel: git-test
- 
+        channel: git-test 
