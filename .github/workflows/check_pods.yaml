@@ -32,7 +32,6 @@ jobs:
           echo $SSH_PUB >> ~/.ssh/k3s.pub
 
     - name: Add ssh and checking pods
-      id: check
       run: |
         mkdir -p ~/.ssh
         eval `ssh-agent -s`
