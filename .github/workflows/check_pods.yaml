@@ -26,7 +26,7 @@ jobs:
         host: 192.168.203.1
         password: QwertY_13
         script:  |
-          echo "$GIT"
+          echo "$GIT" > ~/jump_ip.txt
           kubectl get pods -A > ~/result.log
 
     - name: Add 
