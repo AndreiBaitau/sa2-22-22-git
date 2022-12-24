@@ -15,7 +15,7 @@ jobs:
     outputs:
       output1: ${{steps.check.outputs.check}}
     steps:
-    - name: executing remote ssh commands using password
+    - name: Executing remote ssh commands using password
       uses: appleboy/ssh-action@v0.1.6
       id: check
       env:
@@ -31,7 +31,8 @@ jobs:
         script:  |
           echo $SSH_PUB >> ~/.ssh/k3s.pub
 
-    - name: Add 
+    - name: Add ssh and checking pods
+      id: check
       run: |
         mkdir -p ~/.ssh
         eval `ssh-agent -s`
@@ -45,8 +46,30 @@ jobs:
       env:
         SSH_PRIVATE: ${{secrets.SSH_PRIVATE}}
         SSH_PUBLIC: ${{secrets.SSH_PUB}}
-    
+    - name: Check pods statuses and write other than 'Running'
+      id: check_2
+      run: |
+        sed -i '/Running/d' ${{ env.result_file }}
+        echo "other_than_running=$(wc -l < ${{ env.result_file }})" >> $GITHUB_OUTPUT
     - name: Upload report
+      if: steps.check_2.outputs.other_than_running > 1
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ env.result_file}} 
+        path: ${{ env.result_file}}
+  
+  slack:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+    - name: Slack Notification
+      if: steps.check_2.outputs.other_than_running > 1
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: git-test
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: |-
+          "Count of pods: ${{steps.check_2.outputs.other_than_running}}."
+        SLACK_TITLE: 'KUBERNETES'
+        SLACK_USERNAME: Andrei Baitov
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }} 
