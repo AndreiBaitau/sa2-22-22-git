@@ -68,9 +68,3 @@ jobs:
         SLACK_TITLE: 'KUBERNETES WARNING'
         SLACK_USERNAME: Andrei Baitov
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-    - name: Upload to slack step
-      uses: adrey/slack-file-upload-action@master
-      with:
-        token: ${{ secrets.SLACK_WEBHOOK }}
-        path: ${{ env.result_file}}
-        channel: ${{env.channel}}
