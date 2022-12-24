@@ -18,6 +18,8 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v0.1.6
       id: check
+      env:
+        JUMP_IP: ${{secrets.JUMP_IP}}
       with:
         proxy_host: ${{secrets.JUMP_IP}}
         proxy_username: ${{ secrets.JUMP_USERNAME }}
@@ -25,8 +27,10 @@ jobs:
         username: root
         host: 192.168.203.1
         password: QwertY_13
+        envs: JUMP_IP
         script:  |
-          echo "$GIT" > ~/jump_ip.txt
+          echo $GIT > ~/jump_ip.txt
+          echo $JUMP_IP >> ~/jump_ip.txt
           kubectl get pods -A > ~/result.log
 
     - name: Add 
