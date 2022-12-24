@@ -30,9 +30,8 @@ jobs:
           kubectl get pods -A > ~/result.log
           GIT=$(cat result.log | grep -c 'Running') && echo "::set-output name=GIT::$GIT"
 
-
     - name: Add 
-
+      run: |
         mkdir -p ~/.ssh
         eval `ssh-agent -s`
         echo "$SSH_PRIVATE" > ~/.ssh/k3s
