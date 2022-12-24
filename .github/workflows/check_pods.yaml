@@ -12,31 +12,35 @@ jobs:
       result_file: result.log
     runs-on: ubuntu-latest
     steps:
-    - name: Add SSH key and Make SSH tunnel to k8s (special)
+
+    - name: Add 
       run: |
-        mkdir ~/.ssh
+        mkdir -p ~/.ssh
         eval `ssh-agent -s`
-        ssh-add - <<< "${{secrets.SSH_PRIVATE}}"
+        echo "$SSH_PRIVATE" > ~/.ssh/k3s
+        sudo chmod 600 ~/.ssh/k3s
+        ssh-add - <<< "$SSH_PRIVATE"
+        #echo "$SSH_PUB" > ~/.ssh/k3s.pub
+        #sudo chmod 600 ~/.ssh/k3s.pub
+        #sudo ssh-copy-id -i $SSH_KEY_PATH ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}}
         ssh-keyscan -H ${{secrets.JUMP_IP}} >> ~/.ssh/known_hosts
         sudo apt-get install sshuttle
         sshuttle -r ${{secrets.JUMP_USERNAME}}@${{secrets.JUMP_IP}} 192.168.0.0/16 &
+      shell: bash
+      env:
+        SSH_PRIVATE: ${{secrets.SSH_PRIVATE}}
+        SSH_PUBLIC: ${{secrets.SSH_PUB}}
+        SSH_KEY_PATH: ~/.ssh/k3s.pub
+    
     - name: Get kubectl
       uses: tale/kubectl-action@v1
       with:
         base64-kube-config: ${{ secrets.KUBE_CONFIG }}
     
-    - name: Check pods statuses
-      id: check_err
-      run: |
+    - name: Check pods statuses  
+      run: | 
         kubectl get pods -A >> ${{ env.result_file }}
-        sed -i '/Running/d' ${{ env.result_file }}
-        echo "no_running_line=$(wc -l < ${{ env.result_file }})" >> $GITHUB_OUTPUT
-    - name: Additional information in log file
-      if: steps.check_err.outputs.no_running_line > 1
-      run: |
-        sed -i '1 i\Repository: ${{ github.repository }}' ${{ env.result_file }}
-        sed -i '2 i\Workflow: ${{ github.workflow }}' ${{ env.result_file }}
     - name: Upload report
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ env.result_file}}
+        path: ${{ env.result_file}} 
