@@ -49,6 +49,7 @@ jobs:
       id: check_2
       run: |
         sed -i '/Running/d' ${{ env.result_file }}
+        sed -i '/Completed/d' ${{ env.result_file }}
         echo "other_than_running=$(wc -l < ${{ env.result_file }})" >> $GITHUB_OUTPUT
     - name: Upload report
       if: steps.check_2.outputs.other_than_running > 1
