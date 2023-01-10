@@ -31,10 +31,10 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: git-test
-          SLACK_COLOR: 00b899
+          SLACK_COLOR: fa0000
           SLACK_ICON: https://avatars.mds.yandex.net/i?id=ab4d8466aeb3ace0427503c69b9583ec296c3081-5295804-images-thumbs&n=13
           SLACK_MESSAGE: |-
-            "Any files are not aproved."
+            "Some files are not aproved."
           SLACK_TITLE: 'KUBEVAL CHECK'
           SLACK_USERNAME: Andrei Baitov
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
