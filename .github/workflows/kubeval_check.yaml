@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
         id: files
       - run: |
-              yaml_files="$(ls -ld ./18.K8s/* | jq -R -s -c 'split("\n")[:-1]')"
+              yaml_files="$(ls -d ./18.K8s/* | jq -R -s -c 'split("\n")[:-1]')"
               echo "files=`echo -n $yaml_files`" >> $GITHUB_ENV
   kubeval_check:
     needs: check-dir-with-files
@@ -30,11 +30,12 @@ jobs:
     needs: kubeval_check
     runs-on: ubuntu-latest
     steps:
-      - name: Slack Notification
+      - name: Slack Notificationi
+        #if: ${{ failure() }}
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: git-test
-          SLACK_COLOR: "green"
+          SLACK_COLOR: "pink"
           SLACK_ICON: https://avatars.mds.yandex.net/i?id=ab4d8466aeb3ace0427503c69b9583ec296c3081-5295804-images-thumbs&n=13
           SLACK_MESSAGE: |-
             "All files are aproved."
