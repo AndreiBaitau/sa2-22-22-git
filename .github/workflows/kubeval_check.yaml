@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        k8s-files: ${{fromJson(needs.check-dir-with-files.outputs.files)}}
+        18-k8s-files: ${{fromJson(needs.check-dir-with-files.outputs.files)}}
       fail-fast: false
     steps:
     - uses: actions/checkout@v2 
