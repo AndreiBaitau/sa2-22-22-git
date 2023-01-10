@@ -18,14 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        18-k8s-files: ${{fromJson(needs.check-dir-with-files.outputs.files)}}
+        manifest-files: ${{fromJson(needs.check-dir-with-files.outputs.files)}}
       fail-fast: false
     steps:
       - uses: actions/checkout@v2 
       - name: Checking files with kubeval
         uses: instrumenta/kubeval-action@master
         with: 
-          files: ${{matrix.18-k8s-files}}
+          files: ${{matrix.manifest-files}}
   slack:
     needs: kubeval_check
     runs-on: ubuntu-latest
